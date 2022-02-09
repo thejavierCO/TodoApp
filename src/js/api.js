@@ -69,10 +69,9 @@ class template extends tag{
         return this.tag.querySelector(selector);
     }
     insertText(selector,text){
-        console.log(this.tag.querySelector(selector),selector)
-        this.tag.querySelector(selector).innerText = text;
+        if(text)this.tag.querySelector(selector).innerText = text;
     }
-    insert(tag){
+    insertIn(tag){
         document.querySelector(tag).appendChild(this.tag)
     }
 }
