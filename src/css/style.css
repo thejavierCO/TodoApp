@@ -1,0 +1,19 @@
+.content{
+    position: fixed;
+    background: #000;
+    color:#fff;
+    width: 100vw;
+    height: 100vh;
+    top:0;
+    left:0;
+    padding: 10px;
+}
+.content > *{
+    border:1px solid #fff;
+}
+item.on{
+    background: rgb(30, 21, 66));
+}
+item.off{
+    background: transparent;
+}
