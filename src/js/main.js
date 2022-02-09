@@ -1,29 +1,20 @@
 document.addEventListener("DOMContentLoaded",function(){
     // get tags info
-    const form  = document.getElementById("post_form");
-    const ItemModel = document.querySelector("template.modelItem");
-    // config input date
-    form.querySelector("#post_date").value = new Date().toISOString().slice(0,10); 
-    // content loading
-    form.onsubmit = e=>{
-        // function default
-        e.preventDefault();
-        // get info
-        const title = e.target.querySelector("#post_title").value,
-        desc  = e.target.querySelector("#post_description").value,
-        date  = e.target.querySelector("#post_date").value;
-        // config print
-        let clone = ItemModel.content.cloneNode(true);
-        
-        if(title)clone.querySelector("span.Title").innerText = title;
-        if(desc)clone.querySelector("span.Description").innerText = desc;
-        if(date)clone.querySelector("span.Date").innerText = date;
-        clone.querySelector("item span.Id").innerText = [
-            "[",
-            document.querySelector("#print").getElementsByTagName("item").length,
-            "] -"
-        ].join("");
-        // start print
-        document.querySelector("#print").appendChild(clone);
-    }
+    const formulario  = new form("form#Data");
+    formulario.getInput(".Date").setValue(new Date().toISOString().slice(0,10)); 
+    formulario.submit(e=>{
+        console.log(e.inputs)
+        // const model = new template("template.modelItem");
+        // // get info
+        // const title = e.target.querySelector("#post_title").value,
+        //       desc  = e.target.querySelector("#post_description").value,
+        //       date  = e.target.querySelector("#post_date").value;
+        // // config print
+        // if(title)model.insertText("span.Title",title);
+        // if(desc)model.insertText("span.Description",desc);
+        // if(date)model.insertText("span.Date",date);
+        // model.insertText("span.Id",document.querySelector("#print").getElementsByTagName("item").length);
+        // // start print
+        // model.insert("#print")
+    })
 })

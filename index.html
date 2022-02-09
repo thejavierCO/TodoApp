@@ -2,27 +2,28 @@
 <html>
     <head>
         <title>TodoApp Offline</title>
+        <script src="./src/js/api.js"></script>
         <script src="./src/js/main.js"></script>
         <link rel="stylesheet" href="./src/css/style.css">
     </head>
     <body>
         <div class="content center">
-            <form id="post_form">
-                <input type="text" name="title"        class="inputTitle"       id="post_title">
-                <input type="text" name="description"  class="inputDescription" id="post_description">
-                <input type="date" name="date"         class="inputDate"        id="post_date">
+            <form id="Data" action="#">
+                <input type="text" name="title"        class="input Title">
+                <input type="text" name="description"  class="input Description">
+                <input type="date" name="date"         class="input Date">
                 <input type="submit">
             </form>
             <div id="print">
                 <template class="modelItem">
                     <item>
                         <p>
-                            <span class="Id">[number]</span>
-                            <span class="Title">[title]</span>
+                            <span class="Print Id">[number]</span>
+                            <span class="Print Title">[title]</span>
                         </p>
                         <p>
-                            <span class="Description">[description]</span>
-                            <span class="Date">[Date]</span>
+                            <span class="Print Description">[description]</span>
+                            <span class="Print Date">[Date]</span>
                         </p>
                     </item>
                 </template>
