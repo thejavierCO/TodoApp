@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded",function(){
         model.insertText("span.Title",Title.value);
         model.insertText("span.Description",Description.value);
         model.insertText("span.Date",Date.value);
-        model.insertText("span.Id",document.querySelector("#print").getElementsByTagName("item").length);
+        model.insertText("span.Id",document.querySelector("#print").children.length);
         model.insertIn("#print")
     })
 })

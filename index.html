@@ -8,26 +8,28 @@
     </head>
     <body>
         <div class="content center">
-            <form id="Data" action="#">
-                <input type="text" name="title"        class="input Title">
-                <input type="text" name="description"  class="input Description">
-                <input type="date" name="date"         class="input Date">
-                <input type="submit">
-            </form>
+            <div id="form">
+                <form id="Data" action="#">
+                    <span>Title: <input type="text" name="title" class="input Title"></span>
+                    <span>Descripcion: <input type="text" name="description" class="input Description"></span>
+                    <span>Fecha: <input type="date" name="date" class="input Date"></span>
+                    <span><input type="submit"><br></span>
+                </form>
+            </div>
             <div id="print">
-                <template class="modelItem">
-                    <item>
-                        <p>
-                            <span class="Print Id">0</span>
-                            <span class="Print Title">[title]</span>
-                        </p>
-                        <p>
-                            <span class="Print Description">[description]</span>
-                            <span class="Print Date">[Date]</span>
-                        </p>
-                    </item>
-                </template>
             </div>
         </div>
+        <template class="modelItem">
+            <div class="item">
+                <p>
+                    <span class="Print Id">0</span>
+                    <span class="Print Title">[title]</span>
+                </p>
+                <p>
+                    <span class="Print Description">[description]</span>
+                    <span class="Print Date">[Date]</span>
+                </p>
+            </div>
+        </template>
     </body>
 </html>

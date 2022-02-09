@@ -1,19 +1,36 @@
 .content{
     position: fixed;
-    background: #000;
+    background: #9e9e9e;
     color:#fff;
     width: 100vw;
     height: 100vh;
     top:0;
     left:0;
-    padding: 10px;
+    overflow: auto;
 }
 .content > *{
+    padding:10px;
+    overflow: auto;
+}
+.content div#form{
+    display: flex; 
+    padding:10px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+}
+.content input{
     border:1px solid #fff;
+    background: #000;
+    color:#fff;
 }
-item.on{
-    background: rgb(30, 21, 66));
+.content div#print{
+    background: #08080875;
+    display: grid;
+    grid-template-columns:auto auto auto auto auto;
+    border:1px solid #232323;
 }
-item.off{
-    background: transparent;
+.content div#print > div.item{
+    border:2px solid #ff0;
+    padding: 10px;
 }
