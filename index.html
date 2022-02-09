@@ -1,13 +1,24 @@
-<!DOCTYPE html>
-  
+<!DOCTYPE html>  
 <html>
     <head>
-        <title>
-              
-        </title>
+        <title>TodoApp Offline</title>
+        <script src="./src/js/main.js"></script>
     </head>
-      
     <body>
-          
+        <form id="post_form">
+            <input type="text" name="title"        class="inputTitle"       id="post_title">
+            <input type="text" name="description"  class="inputDescription" id="post_description">
+            <input type="date" name="date"         class="inputDate"        id="post_date">
+            <input type="submit">
+        </form>
+        <div id="print">
+            <template class="modelItem">
+                <item>
+                    <span class="Title">none</span><br>
+                    <span class="Description">none</span><br>
+                    <span class="Date">none</span><br>
+                </item>
+            </template>
+        </div>
     </body>
 </html>
