@@ -1,27 +1,24 @@
 class TodoApp extends EventTarget{
-    constructor(){
+    constructor(a,EventErrors){
         super();
+        this.on("error",EventErrors);
         this._items = [];
+        if(typeof a === "object")this._items = a;
+        else this.dispatchEvent(new CustomEvent("error",{detail:{type:"items",in:a}}))
     }
     get items(){
         return this._items;
     }
     set items(a){
         if(typeof a === "object")this._items = a;
-        throw this.dispatchEvent(new Event("error",{detail:{
-            type:"getItem",
-            in:a
-        }}))
+        throw this.dispatchEvent(new CustomEvent("error",{detail:{type:"getItem",in:a}}))
     }
     addItem(data){
         if(typeof data === "object"){
             this.items.push(data);
             this.dispatchEvent(new CustomEvent("adding",{detail:data}))
             this.dispatchEvent(new CustomEvent("update",{detail:data}))
-        }else this.dispatchEvent(new Event("error",{detail:{
-            type:"adding",
-            in:data
-        }}))
+        }else this.dispatchEvent(new CustomEvent("error",{detail:{type:"adding",in:data}}))
     }
     getItem(id){
         return this.items.filter(e=>e.id==id);
@@ -29,7 +26,7 @@ class TodoApp extends EventTarget{
     updateItem(id,data){
         if(typeof data === "object"){
             this.dispatchEvent(new CustomEvent("update",{detail:data}))
-        }else this.dispatchEvent(new Event("error",{detail:{
+        }else this.dispatchEvent(new CustomEvent("error",{detail:{
             type:"adding",
             in:data
         }}))
@@ -39,8 +36,11 @@ class TodoApp extends EventTarget{
         this.dispatchEvent(new CustomEvent("delete",{detail:{id}}))
     }
     clear(){
-        this.dispatchEvent(new CustomEvent("clear",{detail:{id}}))
+        this.dispatchEvent(new Event("clear"));
         this.items = [];
+    }
+    forceUpdate(){
+        this.dispatchEvent(new Event("update"));
     }
     on(event,callback){this.addEventListener(event,callback);}
 }
@@ -115,10 +115,15 @@ class template extends tag{
     getChild(selector){
         return this.tag.querySelector(selector);
     }
+    addChild(tag){
+        this.tag.appendChild(tag);
+        return this;
+    }
     insertText(selector,text){
         if(text)this.tag.querySelector(selector).innerText = text;
+        return this;
     }
     insertIn(tag){
-        document.querySelector(tag).appendChild(this.tag)
+        return document.querySelector(tag).appendChild(this.tag)
     }
 }

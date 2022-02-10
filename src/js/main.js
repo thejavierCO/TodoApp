@@ -1,27 +1,33 @@
-let api = new TodoApp();
+let api = new TodoApp(localStorage.getItem("items")?JSON.parse(localStorage.getItem("items")):localStorage.setItem("items","[]"));
 
-api.on("error",({detail})=>{
-    console.log(detail)
+api.on("update",({target:db})=>{
+    localStorage.setItem("items",JSON.stringify(db.items))
+    document.querySelector("div#print").innerHTML = "";
+    const modelP = new template("template.modelPrint");
+    db.items.map(e=>{
+        const modelI = new template("template.modelItem");
+        modelI.insertText("span.Title",e.title);
+        modelI.insertText("span.Description",e.description);
+        modelI.insertText("span.Date",e.date);
+        modelI.insertText("span.Id",e.id);
+        modelP.addChild(modelI.tag)
+    })
+    modelP.insertIn("#print")
 })
 
 document.addEventListener("DOMContentLoaded",function(){
     // get tags info
+    api.forceUpdate();
     const formulario  = new form("form#Data");
     formulario.getInput(".Date").value = new Date().toISOString().slice(0,10); 
     formulario.submit(e=>{
         let [Title,Description,Date] = e.inputs;
         api.addItem({
-            id:document.querySelector("#print").children.length,
+            id:api.items.length,
             title:Title.value,
             description:Description.value,
             date:Date.value,
             status:false
         })
-        const model = new template("template.modelItem");
-        model.insertText("span.Title",Title.value);
-        model.insertText("span.Description",Description.value);
-        model.insertText("span.Date",Date.value);
-        model.insertText("span.Id",document.querySelector("#print").children.length);
-        model.insertIn("#print")
     })
 })
