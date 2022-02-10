@@ -25,6 +25,10 @@ class TodoApp extends EventTarget{
     }
     updateItem(id,data){
         if(typeof data === "object"){
+            this.items = this.items.map(e=>e.id==id?((a)=>{
+                Object.keys(data).forEach(f=>a.hasOwnProperty(f)?a[f]=data[f]:a[f]);
+                return a;
+            })(e):e);
             this.dispatchEvent(new CustomEvent("update",{detail:data}))
         }else this.dispatchEvent(new CustomEvent("error",{detail:{
             type:"adding",
@@ -36,10 +40,11 @@ class TodoApp extends EventTarget{
         this.dispatchEvent(new CustomEvent("delete",{detail:{id}}))
     }
     clear(){
-        this.dispatchEvent(new Event("clear"));
         this.items = [];
+        this.dispatchEvent(new Event("clear"));
+        this.dispatchEvent(new Event("update"));
     }
-    forceUpdate(){
+    Update(){
         this.dispatchEvent(new Event("update"));
     }
     on(event,callback){this.addEventListener(event,callback);}

@@ -1,4 +1,10 @@
-let api = new TodoApp(localStorage.getItem("items")?JSON.parse(localStorage.getItem("items")):localStorage.setItem("items","[]"));
+let api = new TodoApp(
+    localStorage.getItem("items")?JSON.parse(localStorage.getItem("items")):localStorage.setItem("items","[]"),
+    (e)=>{
+        e.preventDefault()
+        console.log(e)
+    }
+);
 
 api.on("update",({target:db})=>{
     localStorage.setItem("items",JSON.stringify(db.items))
@@ -17,7 +23,7 @@ api.on("update",({target:db})=>{
 
 document.addEventListener("DOMContentLoaded",function(){
     // get tags info
-    api.forceUpdate();
+    api.Update();
     const formulario  = new form("form#Data");
     formulario.getInput(".Date").value = new Date().toISOString().slice(0,10); 
     formulario.submit(e=>{
