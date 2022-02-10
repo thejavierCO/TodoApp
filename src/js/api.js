@@ -1,3 +1,50 @@
+class TodoApp extends EventTarget{
+    constructor(){
+        super();
+        this._items = [];
+    }
+    get items(){
+        return this._items;
+    }
+    set items(a){
+        if(typeof a === "object")this._items = a;
+        throw this.dispatchEvent(new Event("error",{detail:{
+            type:"getItem",
+            in:a
+        }}))
+    }
+    addItem(data){
+        if(typeof data === "object"){
+            this.items.push(data);
+            this.dispatchEvent(new CustomEvent("adding",{detail:data}))
+            this.dispatchEvent(new CustomEvent("update",{detail:data}))
+        }else this.dispatchEvent(new Event("error",{detail:{
+            type:"adding",
+            in:data
+        }}))
+    }
+    getItem(id){
+        return this.items.filter(e=>e.id==id);
+    }
+    updateItem(id,data){
+        if(typeof data === "object"){
+            this.dispatchEvent(new CustomEvent("update",{detail:data}))
+        }else this.dispatchEvent(new Event("error",{detail:{
+            type:"adding",
+            in:data
+        }}))
+    }
+    delItem(id){
+        this.items = this.items.filter(e=>e.id!=id)
+        this.dispatchEvent(new CustomEvent("delete",{detail:{id}}))
+    }
+    clear(){
+        this.dispatchEvent(new CustomEvent("clear",{detail:{id}}))
+        this.items = [];
+    }
+    on(event,callback){this.addEventListener(event,callback);}
+}
+
 class tag{
     constructor(selector,not_alert=true){
         this._tag = undefined;
