@@ -1,5 +1,5 @@
 class TodoApp extends EventTarget{
-    constructor(a,EventErrors){
+    constructor(a){
         super();
         this._items = [];
         if(typeof a === "object")this._items = a;
@@ -49,23 +49,31 @@ class TodoApp extends EventTarget{
     on(event,callback){this.addEventListener(event,callback);}
 }
 
-class tag{
-    constructor(selector,not_alert=true){
+class tag extends EventTarget{
+    constructor(selector){
+        super();
         this._tag = undefined;
         if(typeof selector === "string"){
             if(document.querySelector(selector))this._tag = document.querySelector(selector);
             else throw "error not exist tag";
         }else if(typeof selector != "undefined"){
             throw "error require string type queryselector"
-        }else{
-            not_alert==false?console.warn("please check this error",selector):undefined;
-        }
+        }else this.dispatchEvent(new CustomEvent("error",{detail:{
+            type:"tag_class",
+            in:selector
+        }}))
     }
     get tag(){
         return this._tag;
     }
     set tag(a){
         this._tag = document.querySelector(a);
+    }
+    get onError(){
+        return (callback)=>this.addEventListener("error",callback);
+    }
+    set onError(callback){
+        this.addEventListener("error",callback);
     }
     tagChild(a){
         return this.tag.querySelector(a)
@@ -82,6 +90,26 @@ class inputTag extends tag{
     get value(){
         return this.tag.value;
     }
+    change(callback){
+        this.on("change",a=>{
+            a.inputs = Array.from(document.getElementsByTagName("input")).map(e=>{
+                try{
+                    if(e.className.length>0){
+                        return new inputTag(e.className.split(" ").join("."));
+                    }else if(e.id){
+                        return new inputTag("#"+e.id)
+                    }else{
+                        let tag = new inputTag(undefined);
+                        tag._tag = e;
+                        return tag;
+                    }
+                }catch(err){
+                    throw err;
+                }
+            });
+            callback(a);
+        })
+    }
 }
 
 class form extends tag{
@@ -89,7 +117,7 @@ class form extends tag{
         return new inputTag(id);
     }
     submit(callback){
-        this.tag.addEventListener("submit",a=>{
+        this.on("submit",a=>{
             a.preventDefault();
             a.inputs = Array.from(document.getElementsByTagName("input")).map(e=>{
                 try{
@@ -98,7 +126,7 @@ class form extends tag{
                     }else if(e.id){
                         return this.getInput("#"+e.id)
                     }else{
-                        let tag = this.getInput(undefined,true);
+                        let tag = this.getInput(undefined);
                         tag._tag = e;
                         return tag;
                     }

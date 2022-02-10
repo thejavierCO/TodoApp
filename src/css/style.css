@@ -33,4 +33,5 @@
 .content div#print > div.item{
     border:2px solid #ff0;
     padding: 10px;
+    overflow: auto;
 }

@@ -11,10 +11,14 @@
         <div class="content center">
             <div id="form">
                 <form id="Data" action="#">
-                    <span>Title: <input type="text" name="title" class="input Title"></span>
-                    <span>Descripcion: <input type="text" name="description" class="input Description"></span>
-                    <span>Fecha: <input type="date" name="date" class="input Date"></span>
-                    <span><input type="submit"><br></span>
+                    <span>
+                        Id: <input type="number" name="id" class="input Id" min="0">
+                        Title: <input type="text" name="title" class="input Title">
+                        Descripcion: <input type="text" name="description" class="input Description">
+                        Fecha: <input type="date" name="date" class="input Date">
+                        Done: <input type="checkbox" name="Done" class="input Done">
+                        <input type="submit" value="Guardar">
+                    </span>
                 </form>
             </div>
             <div id="print">
@@ -27,9 +31,10 @@
                     <span class="Print Title">[title]</span>
                 </p>
                 <p>
-                    <span class="Print Description">[description]</span>
-                    <span class="Print Date">[Date]</span>
+                    <span class="Print Description">[description]</span><br>
+                    [<span class="Print Date">[Date]</span>]
                 </p>
+                <!-- <button id="itemDelete">Delete</button> -->
             </div>
         </template>
         <template class="modelPrint">
