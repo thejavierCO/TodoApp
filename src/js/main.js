@@ -1,10 +1,4 @@
-let api = new TodoApp(
-    localStorage.getItem("items")?JSON.parse(localStorage.getItem("items")):localStorage.setItem("items","[]"),
-    (e)=>{
-        e.preventDefault()
-        console.log(e)
-    }
-);
+let api = new TodoApp(localStorage.getItem("items")?JSON.parse(localStorage.getItem("items")):localStorage.setItem("items","[]"));
 
 api.on("update",({target:db})=>{
     localStorage.setItem("items",JSON.stringify(db.items))

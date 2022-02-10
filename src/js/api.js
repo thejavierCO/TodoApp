@@ -1,7 +1,6 @@
 class TodoApp extends EventTarget{
     constructor(a,EventErrors){
         super();
-        this.on("error",EventErrors);
         this._items = [];
         if(typeof a === "object")this._items = a;
         else this.dispatchEvent(new CustomEvent("error",{detail:{type:"items",in:a}}))
@@ -10,8 +9,10 @@ class TodoApp extends EventTarget{
         return this._items;
     }
     set items(a){
-        if(typeof a === "object")this._items = a;
-        throw this.dispatchEvent(new CustomEvent("error",{detail:{type:"getItem",in:a}}))
+        if(typeof a === "object"){
+            this._items = a;
+            this.dispatchEvent(new CustomEvent("update",{detail:{data:a}}))
+        }else this.dispatchEvent(new CustomEvent("error",{detail:{type:"getItem",in:a}}))
     }
     addItem(data){
         if(typeof data === "object"){
@@ -29,7 +30,6 @@ class TodoApp extends EventTarget{
                 Object.keys(data).forEach(f=>a.hasOwnProperty(f)?a[f]=data[f]:a[f]);
                 return a;
             })(e):e);
-            this.dispatchEvent(new CustomEvent("update",{detail:data}))
         }else this.dispatchEvent(new CustomEvent("error",{detail:{
             type:"adding",
             in:data
@@ -41,11 +41,10 @@ class TodoApp extends EventTarget{
     }
     clear(){
         this.items = [];
-        this.dispatchEvent(new Event("clear"));
-        this.dispatchEvent(new Event("update"));
+        this.dispatchEvent(new CustomEvent("clear"));
     }
     Update(){
-        this.dispatchEvent(new Event("update"));
+        this.dispatchEvent(new CustomEvent("update"));
     }
     on(event,callback){this.addEventListener(event,callback);}
 }
