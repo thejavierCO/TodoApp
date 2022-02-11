@@ -22,11 +22,11 @@ class TodoApp extends EventTarget{
         }else this.dispatchEvent(new CustomEvent("error",{detail:{type:"adding",in:data}}))
     }
     getItem(id){
-        return this.items.filter(e=>e.id==id);
+        return this.items.filter((a,i)=>i==id);
     }
     updateItem(id,data){
         if(typeof data === "object"){
-            this.items = this.items.map(e=>e.id==id?((a)=>{
+            this.items = this.items.map((e,i)=>i==id?((a)=>{
                 Object.keys(data).forEach(f=>a.hasOwnProperty(f)?a[f]=data[f]:a[f]);
                 return a;
             })(e):e);
@@ -36,7 +36,7 @@ class TodoApp extends EventTarget{
         }}))
     }
     delItem(id){
-        this.items = this.items.filter(e=>e.id!=id)
+        this.items = this.items.filter((e,i)=>i!=id)
         this.dispatchEvent(new CustomEvent("delete",{detail:{id}}))
     }
     clear(){
@@ -58,16 +58,19 @@ class tag extends EventTarget{
             else throw "error not exist tag";
         }else if(typeof selector != "undefined"){
             throw "error require string type queryselector"
-        }else this.dispatchEvent(new CustomEvent("error",{detail:{
+        }else this.reject({detail:{
             type:"tag_class",
             in:selector
-        }}))
+        }})
     }
     get tag(){
         return this._tag;
     }
     set tag(a){
         this._tag = document.querySelector(a);
+    }
+    reject(data){
+        this.dispatchEvent(new CustomEvent("error",{detail:data}))
     }
     get onError(){
         return (callback)=>this.addEventListener("error",callback);
@@ -78,66 +81,85 @@ class tag extends EventTarget{
     tagChild(a){
         return this.tag.querySelector(a)
     }
-    on(event,callback){
-        this.tag.addEventListener(event,callback);
+    insertElement(a){
+        this.tag.appendChild(a);
+        return this;
+    }
+    on(event,callback,preventDefault=false){
+        this.tag.addEventListener(event,a=>{
+            preventDefault?a.preventDefault():"";
+            a.api = this;
+            callback(a);
+        });
+        return this;
     }
 }
 
 class inputTag extends tag{
+    constructor(id,parent=undefined){
+        super(id);
+        this.parent = parent;
+        this.type = this.tag.type;
+    }
     set value(a){
-        this.tag.value = a;
+        switch(this.type){
+            case "checkbox":
+                this.tag.checked = a;
+            break;
+            default:
+                this.tag.value = a;
+        }
     }
     get value(){
-        return this.tag.value;
+        switch(this.type){
+            case "checkbox":
+                return this.tag.checked;
+            break;
+            default:
+                return this.tag.value;
+        }
     }
-    change(callback){
-        this.on("change",a=>{
-            a.inputs = Array.from(document.getElementsByTagName("input")).map(e=>{
-                try{
-                    if(e.className.length>0){
-                        return new inputTag(e.className.split(" ").join("."));
-                    }else if(e.id){
-                        return new inputTag("#"+e.id)
-                    }else{
-                        let tag = new inputTag(undefined);
-                        tag._tag = e;
-                        return tag;
-                    }
-                }catch(err){
-                    throw err;
-                }
-            });
-            callback(a);
-        })
+    default(a){
+        this.value = a;
+        return this;
+    }
+    change(callback,preventDefault=false){
+        this.on("change",callback,preventDefault)
+        return this;
     }
 }
 
 class form extends tag{
     getInput(id){
-        return new inputTag(id);
+        return new inputTag(id,this);
     }
-    submit(callback){
-        this.on("submit",a=>{
-            a.preventDefault();
-            a.inputs = Array.from(document.getElementsByTagName("input")).map(e=>{
-                try{
-                    if(e.className.length>0){
-                        return this.getInput(e.className.split(" ").join("."));
-                    }else if(e.id){
-                        return this.getInput("#"+e.id)
-                    }else{
-                        let tag = this.getInput(undefined);
-                        tag._tag = e;
-                        return tag;
-                    }
-                }catch(err){
-                    throw err;
+    getInputs(){
+        return Array.from(this.tag.getElementsByTagName("input")).map(e=>{
+            try{
+                if(e.className.length>0){
+                    return this.getInput(e.className.split(" ").join("."));
+                }else if(e.id){
+                    return this.getInput("#"+e.id)
+                }else{
+                    let tag = this.getInput(undefined);
+                    tag._tag = e;
+                    return tag;
                 }
-            });
-            callback(a)
-        })
+            }catch(err){
+                this.reject({detail:{
+                    type:"form",
+                    in:err
+                }})
+                return [];
+            }
+        });
+    }
+    submit(callback,preventDefault=false){
+        this.on("submit",callback,preventDefault)
+        return this;
     }
 }
+
 
 class template extends tag{
     constructor(selector){
@@ -146,10 +168,6 @@ class template extends tag{
     }
     getChild(selector){
         return this.tag.querySelector(selector);
-    }
-    addChild(tag){
-        this.tag.appendChild(tag);
-        return this;
     }
     insertText(selector,text){
         if(text)this.tag.querySelector(selector).innerText = text;
