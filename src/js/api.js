@@ -1,76 +1,20 @@
-<<<<<<< HEAD
-class TodoApp extends EventTarget{
-    constructor(a){
-        super();
-        this._items = [];
-        if(typeof a === "object")this._items = a;
-        else this.dispatchEvent(new CustomEvent("error",{detail:{type:"items",in:a}}))
-    }
-    get items(){
-        return this._items;
-    }
-    set items(a){
-        if(typeof a === "object"){
-            this._items = a;
-            this.dispatchEvent(new CustomEvent("update",{detail:{data:a}}))
-        }else this.dispatchEvent(new CustomEvent("error",{detail:{type:"getItem",in:a}}))
-    }
-    addItem(data){
-        if(typeof data === "object"){
-            this.items.push(data);
-            this.dispatchEvent(new CustomEvent("adding",{detail:data}))
-            this.dispatchEvent(new CustomEvent("update",{detail:data}))
-        }else this.dispatchEvent(new CustomEvent("error",{detail:{type:"adding",in:data}}))
-    }
-    getItem(id){
-        return this.items.filter(e=>e.id==id);
-    }
-    updateItem(id,data){
-        if(typeof data === "object"){
-            this.items = this.items.map(e=>e.id==id?((a)=>{
-                Object.keys(data).forEach(f=>a.hasOwnProperty(f)?a[f]=data[f]:a[f]);
-                return a;
-            })(e):e);
-        }else this.dispatchEvent(new CustomEvent("error",{detail:{
-            type:"adding",
-            in:data
-        }}))
-    }
-    delItem(id){
-        this.items = this.items.filter(e=>e.id!=id)
-        this.dispatchEvent(new CustomEvent("delete",{detail:{id}}))
-    }
-    clear(){
-        this.items = [];
-        this.dispatchEvent(new CustomEvent("clear"));
-    }
-    Update(){
-        this.dispatchEvent(new CustomEvent("update"));
-    }
-    on(event,callback){this.addEventListener(event,callback);}
-}
-
-=======
->>>>>>> dbff5f6 (delete old system)
 class tag extends EventTarget{
     constructor(selector){
         super();
-        this._tag = undefined;
-        if(typeof selector === "string"){
-            if(document.querySelector(selector))this._tag = document.querySelector(selector);
-            else throw "error not exist tag";
-        }else if(typeof selector != "undefined"){
-            throw "error require string type queryselector"
-        }else this.dispatchEvent(new CustomEvent("error",{detail:{
-            type:"tag_class",
-            in:selector
-        }}))
+        this._tag = document.querySelector(selector);
+    }
+    use(HTMLElement){
+        this.tag = HTMLElement;
+        return this;
+    }
+    get(selector){
+        return new tag(selector);
     }
     get tag(){
         return this._tag;
     }
     set tag(a){
-        this._tag = document.querySelector(a);
+        this._tag = a;
     }
     get onError(){
         return (callback)=>this.addEventListener("error",callback);
@@ -161,4 +105,8 @@ class template extends tag{
     insertIn(tag){
         return document.querySelector(tag).appendChild(this.tag)
     }
+}
+
+function $(selector){
+    const a = document.querySelector(selector);
 }

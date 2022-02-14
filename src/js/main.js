@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 let api = new TodoApp(localStorage.getItem("items")?JSON.parse(localStorage.getItem("items")):localStorage.setItem("items","[]"));
 
 document.addEventListener("DOMContentLoaded",function(){
@@ -9,12 +10,40 @@ document.addEventListener("DOMContentLoaded",function(){
         let [Id,Title,Description,date,Done] = e.inputs;
         let [item] = api.getItem(Id.value);
 =======
+=======
+//const Home = new tag("body")
+
+>>>>>>> cbf8b19 (use jquery and created new systemPrint)
 let api = new Tododb(localStorage.getItem("items")||localStorage.setItem("items","[]"))
 .on("error",(a)=>{
     console.log(a)
 })
+.on("update",({target:db})=>{
+    // save in storage
+    localStorage.setItem("items",JSON.stringify(db.db))
+    // clear content
+    document.querySelector("div#print").innerHTML = "";
+    // system print
+    console.log($("template.modelPrint"))
+    // const modelP = new template("template.modelPrint");
+    // db.db.map((e,i)=>{
+    //     const modelI = new template("template.modelItem");
+    //     modelI.getChild("button#itemDelete").addEventListener("click",
+    //         ({target})=>api.del(target.parentNode.querySelector("[itemid]").getAttribute("itemid"))
+    //     )
+    //     modelI.getChild("button#itemEdit").addEventListener("click",
+    //         ({target})=>id.value = target.parentNode.querySelector("[itemid]").getAttribute("itemid")
+    //     )
+    //     modelI.insertText("span.Title",e.title);
+    //     modelI.insertText("span.Description",e.description);
+    //     modelI.insertText("span.Date",e.date);
+    //     modelI.getChild("[itemid]").setAttribute("itemid",i)
+    //     modelP.insertElement(modelI.tag)
+    // })
+    // modelP.insertIn("#print")
+})
 
-document.addEventListener("DOMContentLoaded",function(){
+$("body").on("load",function(){
     const [id,title,description,date,done]  = new form("form#Data").submit(({api:f})=>{
         const [id,title,description,date,done] = f.getInputs();
         if(!!api.get(id.value)){
@@ -53,6 +82,7 @@ document.addEventListener("DOMContentLoaded",function(){
             Done.tag.checked = false;
         }
     })
+<<<<<<< HEAD
     formulario.getInput(".Date").value = new Date().toISOString().slice(0,10);
     api.on("update",({target:db})=>{
 <<<<<<< HEAD
@@ -115,6 +145,8 @@ document.addEventListener("DOMContentLoaded",function(){
         }
     })
 =======
+=======
+>>>>>>> cbf8b19 (use jquery and created new systemPrint)
     api.init();
 >>>>>>> cd9a976 (new system storage)
 })
