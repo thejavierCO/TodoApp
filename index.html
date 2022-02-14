@@ -25,16 +25,18 @@
             </div>
         </div>
         <template class="modelItem">
-            <div class="item">
+            <div class="item" itemId="0">
                 <p>
-                    <span class="Print Id">0</span>
+                    <span class="Print Id" >0</span>
                     <span class="Print Title">[title]</span>
                 </p>
                 <p>
                     <span class="Print Description">[description]</span><br>
                     [<span class="Print Date">[Date]</span>]
                 </p>
-                <!-- <button id="itemDelete">Delete</button> -->
+                <button id="itemDelete">Delete</button>
+                <button id="itemEdit">Edit</button>
+                <label for="itemComplete"><button id="itemComplete">[status]</button></label>
             </div>
         </template>
         <template class="modelPrint">

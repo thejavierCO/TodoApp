@@ -29,13 +29,17 @@ document.addEventListener("DOMContentLoaded",function(){
         const modelP = new template("template.modelPrint");
         db.items.map(e=>{
             const modelI = new template("template.modelItem");
-            // modelI.getChild("button#itemDelete").addEventListener("click",({target})=>
-            //     api.delItem(target.parentNode.querySelector(".Id").innerText))
+            modelI.getChild("button#itemDelete").addEventListener("click",
+                ({target})=>api.delItem(target.parentNode.querySelector("[itemid]").getAttribute("itemid"))
+            )
+            modelI.getChild("button#itemEdit").addEventListener("click",
+                ({target})=>id.value = target.parentNode.querySelector("[itemid]").getAttribute("itemid")
+            )
             modelI.insertText("span.Title",e.title);
             modelI.insertText("span.Description",e.description);
             modelI.insertText("span.Date",e.date);
-            modelI.insertText("span.Id",e.id);
-            modelP.addChild(modelI.tag)
+            modelI.getChild("[itemid]").setAttribute("itemid",i)
+            modelP.insertElement(modelI.tag)
         })
         modelP.insertIn("#print")
     })
