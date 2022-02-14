@@ -1,4 +1,13 @@
 
+// navigator.serviceWorker.register('./src/js/sw.js').then(function(registration) {
+// // Registration was successful
+// console.log('ServiceWorker registration successful with scope: ', registration.scope);
+// }, function(err) {
+// // registration failed :(
+// console.log('ServiceWorker registration failed: ', err);
+// });
+
+
 const id = $("form#Data input.Id"),
 title = $("form#Data input.Title"),
 description = $("form#Data input.Description"),

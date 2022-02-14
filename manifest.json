@@ -1,0 +1,10 @@
+{
+    "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+    "name": "TodoAppOffline",
+    "short_name": "Todo",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#fff",
+    "description": "todoApp offline app",
+    "icons": []
+}
