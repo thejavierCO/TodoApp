@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 class TodoApp extends EventTarget{
     constructor(a){
         super();
@@ -49,6 +50,8 @@ class TodoApp extends EventTarget{
     on(event,callback){this.addEventListener(event,callback);}
 }
 
+=======
+>>>>>>> dbff5f6 (delete old system)
 class tag extends EventTarget{
     constructor(selector){
         super();
