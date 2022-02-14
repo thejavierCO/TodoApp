@@ -1,28 +1,5 @@
-let api = new Tododb(localStorage.getItem("items")||localStorage.setItem("items","[]"))
-.on("error",(a)=>console.warn(a))
-.on("update",({target:db})=>{
-    localStorage.setItem("items",JSON.stringify(db.db))
-    document.querySelector("div#print").innerHTML = "";
-    // system print
-    // const modelP = new template("template.modelPrint");
-    // db.db.map((e,i)=>{
-    //     const modelI = new template("template.modelItem");
-    //     modelI.getChild("button#itemDelete").addEventListener("click",
-    //         ({target})=>api.del(target.parentNode.querySelector("[itemid]").getAttribute("itemid"))
-    //     )
-    //     modelI.getChild("button#itemEdit").addEventListener("click",
-    //         ({target})=>id.value = target.parentNode.querySelector("[itemid]").getAttribute("itemid")
-    //     )
-    //     modelI.insertText("span.Title",e.title);
-    //     modelI.insertText("span.Description",e.description);
-    //     modelI.insertText("span.Date",e.date);
-    //     modelI.getChild("[itemid]").setAttribute("itemid",i)
-    //     modelP.insertElement(modelI.tag)
-    // })
-    // modelP.insertIn("#print")
-})
 
-const id = $("form#Data input.Id").val(api.length),
+const id = $("form#Data input.Id"),
 title = $("form#Data input.Title"),
 description = $("form#Data input.Description"),
 date = $("form#Data input.Date"),
@@ -34,7 +11,42 @@ clearInputs = ()=>{
     done[0].checked = false;
 };
 
-id.on("change",_=>{
+let api = new Tododb(localStorage.getItem("items")||localStorage.setItem("items","[]"))
+.on("error",(a)=>console.warn(a))
+.on("update",({target:db})=>{
+    localStorage.setItem("items",JSON.stringify(db.db))
+    document.querySelector("div#print").innerHTML = "";
+    clearInputs();
+    // system print
+    const modelP = $($("template.modelPrint").get(0).content.cloneNode(true));
+    db.db.map((e,i)=>{
+        const modelI = $($("template.modelItem").get(0).content.cloneNode(true));
+        modelI.find("button#itemDelete").click(
+            ({target})=>api.del($(target).parent().attr("itemid"))
+        )
+        modelI.find("button#itemEdit").click(
+            ({target})=>id.val($(target).parent().attr("itemid")).get(0).dispatchEvent(new Event("change"))
+        )
+        modelI.find("button#itemComplete").click(
+            ({target})=>
+                db.get($(target).parent().attr("itemid"))?
+                    db.update($(target).parent().attr("itemid"),{
+                        status:!db.get($(target).parent().attr("itemid")).status
+                    })
+                :undefined
+        ).text(!e.status?"complete":"not complete");
+        modelI.find("span.Title").text(e.title)
+        modelI.find("span.Description").text(e.description)
+        modelI.find("span.Date").text(e.date)
+        modelI.find("[itemid]").attr("itemid",i)
+        modelI.find("[itemid]").attr("status",e.status)
+        modelP.append(modelI.get(0))
+    })
+    $("div#print").append(modelP[0]);
+    id.val(db.length).get(0).max = db.length;
+})
+
+id.val(api.length).on("change",_=>{
     let item = api.get(+id.val());
     if(item){
         title.val(item.title);
@@ -54,8 +66,6 @@ $("form#Data").submit(e=>{
     }
     if(!!api.get(id.val())) api.update(id.val(),data);
     else api.push(data);
-    id.val(api.length).get(0).max = api.length;
-    clearInputs();
 })
 
 api.init();

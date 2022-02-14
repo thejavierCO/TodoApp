@@ -35,3 +35,8 @@
     padding: 10px;
     overflow: auto;
 }
+
+.content div#print > div.item[status="true"]{
+    background:#ff0;
+    color:#000;
+}
