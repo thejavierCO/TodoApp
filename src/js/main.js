@@ -1,12 +1,17 @@
 
-// navigator.serviceWorker.register('./src/js/sw.js').then(function(registration) {
-// // Registration was successful
-// console.log('ServiceWorker registration successful with scope: ', registration.scope);
-// }, function(err) {
-// // registration failed :(
-// console.log('ServiceWorker registration failed: ', err);
-// });
 
+navigator.serviceWorker.getRegistrations().then(e=>{
+    if(e.length===0){
+        navigator.serviceWorker.register('./src/js/sw.js').then(function(registration) {
+            console.log(registration);
+        }, function(err) {
+            console.warn(err);
+        });
+    }else e.forEach(e=>e.update());
+})
+.catch(e=>{
+    console.log(e)
+})
 
 const id = $("form#Data input.Id"),
 title = $("form#Data input.Title"),
