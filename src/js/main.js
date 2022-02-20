@@ -1,17 +1,17 @@
 
 
-navigator.serviceWorker.getRegistrations().then(e=>{
-    if(e.length===0){
-        navigator.serviceWorker.register('./src/js/sw.js').then(function(registration) {
-            console.log(registration);
-        }, function(err) {
-            console.warn(err);
-        });
-    }else e.forEach(e=>e.update());
-})
-.catch(e=>{
-    console.log(e)
-})
+// navigator.serviceWorker.getRegistrations().then(e=>{
+//     if(e.length===0){
+//         navigator.serviceWorker.register('./src/js/sw.js').then(function(registration) {
+//             console.log(registration);
+//         }, function(err) {
+//             console.warn(err);
+//         });
+//     }else e.forEach(e=>e.update());
+// })
+// .catch(e=>{
+//     console.log(e)
+// })
 
 const id = $("form#Data input.Id"),
 title = $("form#Data input.Title"),
