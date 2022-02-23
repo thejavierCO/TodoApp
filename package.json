@@ -1,0 +1,26 @@
+{
+  "name": "todoapp",
+  "description": "- HTML - CSS - JS",
+  "version": "1.0.0",
+  "source": "./src/js/main.js",
+  "main": "./dist/main.js",
+  "scripts": {
+    "watch": "parcel watch",
+    "build": "parcel build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thejavierCO/TodoApp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thejavierCO/TodoApp/issues"
+  },
+  "homepage": "https://github.com/thejavierCO/TodoApp#readme",
+  "devDependencies": {
+    "parcel": "^2.3.2",
+    "typescript": "^4.5.5"
+  }
+}

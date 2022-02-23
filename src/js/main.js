@@ -1,4 +1,5 @@
-
+import "./jquery.min.js";
+import "./TodoApp.js";
 
 // navigator.serviceWorker.getRegistrations().then(e=>{
 //     if(e.length===0){
