@@ -5,8 +5,8 @@
   "source": "./src/js/main.js",
   "main": "./dist/main.js",
   "scripts": {
-    "watch": "parcel watch",
-    "build": "parcel build"
+    "dev": "parcel ./src/index.html",
+    "build": "parcel build ./src/index.html"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/thejavierCO/TodoApp#readme",
   "devDependencies": {
+    "@parcel/packager-raw-url": "^2.3.2",
+    "@parcel/transformer-webmanifest": "^2.3.2",
     "parcel": "^2.3.2",
     "typescript": "^4.5.5"
   }
