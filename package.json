@@ -2,8 +2,6 @@
   "name": "todoapp",
   "description": "- HTML - CSS - JS",
   "version": "1.0.0",
-  "source": "./src/js/main.js",
-  "main": "./dist/main.js",
   "scripts": {
     "dev": "parcel ./src/index.html",
     "build": "parcel build ./src/index.html"
